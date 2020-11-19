@@ -1,12 +1,40 @@
+const User = require('../models/users')
 class UsersCtl {
-  find(ctx) {
-    ctx.body = { name: "lilei" }
+  async find(ctx) {
+    await User.find()
+    ctx.body = await User.find()
   }
-  findById(ctx) {
-    ctx.body = `userid:${ctx.params.id}`
+  async findById(ctx) {
+    const user = await User.findById(ctx.params.id)
+    if (!user) {
+      ctx.throw(404, '用户不存在')
+    }
+    ctx.body = user
   }
-  create(ctx) {}
-  update(ctx) {}
-  delete(ctx) {}
+  async create(ctx) {
+    ctx.verifyParams({
+      name: { type: 'string', required: true },
+    })
+    const user = await new User(ctx.request.body).save()
+    ctx.body = user
+  }
+  async update(ctx) {
+    const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body, {
+      useFindAndModify: false,
+    })
+    if (!user) {
+      ctx.throw(404, '用户不存在')
+    }
+    ctx.body = user
+  }
+  async delete(ctx) {
+    const user = await User.findByIdAndRemove(ctx.params.id, {
+      useFindAndModify: false,
+    })
+    if (!user) {
+      ctx.throw(404, '用户不存在')
+    }
+    ctx.status = 204
+  }
 }
 module.exports = new UsersCtl()
