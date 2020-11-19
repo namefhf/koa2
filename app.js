@@ -4,14 +4,18 @@ const bodyparser = require('koa-bodyparser') //处理post请求体
 const error = require('koa-json-error') //错误处理
 const parameter = require('koa-parameter') //校验参数
 const mongoose = require('mongoose')
-cosnt jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const app = new Koa()
 const routing = require('./routes/index')
 const { connectionStr } = require('./config')
 // 数据库连接
-mongoose.connect(connectionStr, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
-  console.log('connect success')
-})
+mongoose.connect(
+  connectionStr,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log('connect success')
+  }
+)
 mongoose.connection.on('error', (err) => {
   console.log('Mongoose connection error: ' + err)
 })
