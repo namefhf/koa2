@@ -1,10 +1,9 @@
 const Koa = require('koa')
-
 const bodyparser = require('koa-bodyparser') //处理post请求体
 const error = require('koa-json-error') //错误处理
 const parameter = require('koa-parameter') //校验参数
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
+
 const app = new Koa()
 const routing = require('./routes/index')
 const { connectionStr } = require('./config')
